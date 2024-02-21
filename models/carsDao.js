@@ -100,3 +100,25 @@ exports.removeFavourite = (userid, carid) => {
         })
     });
 }
+
+exports.getCarById = (carid) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM Cars WHERE id=?';
+        db.get(query, [carid], (err, row) => {
+            if (err) throw err;
+            else if (row === undefined) resolve({error: "Auto inesistente"});
+            else {
+                const car = {
+                    id: row.id,
+                    marca: row.marca,
+                    modello: row.modello,
+                    prezzo: row.prezzo,
+                    descrizione: row.descrizione,
+                    image: "../../images/" + row.image
+                }
+
+                resolve(car);
+            }
+        })
+    })
+}

@@ -15,29 +15,11 @@ router.get('/showroom', (req, res) => {
         });
 });
 
-router.get('/favourites', (req, res) => {
-    if (req.isAuthenticated()){
-        carsDao.getAllFavourites(req.user.id)
-            .then((cars) => {
-                console.log(cars);
-                res.render('favourites', {cars});
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).send('Errore recupero dati dei preferiti');
-            });
-
-    } else {
-        res.redirect('/login');
-    }
-});
-
-
 router.get('/favourites/add/:carid', (req, res) => {
     if (req.isAuthenticated()){
         carsDao.addFavourite(req.user.id, req.params.carid)
             .then(() => {
-                res.redirect('../');
+                res.redirect('../../../user/favourites');
             })
             .catch(() => {
                 res.redirect('/user/home');
@@ -51,7 +33,7 @@ router.get('/favourites/remove/:carid', (req, res) => {
     if(req.isAuthenticated()){
         carsDao.removeFavourite(req.user.id, req.params.carid)
             .then(() => {
-                res.redirect('../');
+                res.redirect('../../../user/favourites');
             })
             .catch(() => {
                 res.redirect('/user/home');
@@ -59,7 +41,19 @@ router.get('/favourites/remove/:carid', (req, res) => {
     } else {
         res.redirect('/login');
     }
-})
+});
+
+router.get('/details/:carid', (req, res) => {
+    console.log(req.params.carid);
+    carsDao.getCarById(req.params.carid)
+        .then((car) => {
+            res.render('details', {car});
+        })
+        .catch(() => {
+            console.error(err);
+            res.status(500).send('Errore recupero dati dell auto');
+        });
+});
 
 
 module.exports = router;

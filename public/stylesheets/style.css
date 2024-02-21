@@ -11,16 +11,6 @@ body {
   text-align: center;
 }*/
 
-h1 {
-  color: #ff6800;
-}
-
-form {
-  background: #fff;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
 
 label {
   display: block;
@@ -52,13 +42,11 @@ button:hover {
   border-color: #ff6800;
 }
 
-a {
-  color: #ff6800;
-}
+
 
 .square-image-container {
-  width: 300px; /* Imposta la larghezza desiderata */
-  height: 300px; /* Imposta l'altezza desiderata */
+  width: 250px; /* Imposta la larghezza desiderata */
+  height: 250px; /* Imposta l'altezza desiderata */
   overflow: hidden; /* Nasconde qualsiasi parte dell'immagine che eccede la dimensione del contenitore */
   display: flex;
   align-items: center;
@@ -78,4 +66,35 @@ a {
 .table td {
   text-align: center;
   vertical-align: middle;
+}
+
+.car-details-container {
+  text-align: center;
+  max-width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.car-image-container {
+  width: 500px; /* Imposta la larghezza desiderata */
+  height: 300px; /* Imposta l'altezza desiderata */
+  border: 2px solid #ddd;
+  border-radius: 8px;
+}
+
+.car-image {
+  width: 100%; /* L'immagine si adatta alla larghezza del contenitore */
+  height: 100%;
+  object-fit: scale-down;
+}
+
+h1 {
+  color: #ff6800;
+}
+
+a {
+  color: #ff6800;
 }

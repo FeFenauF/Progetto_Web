@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettagli Auto</title>
+    <link href="/stylesheets/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+        <a class="navbar-brand text-orange" href="/cars/showroom">Showroom</a>
+    </div>
+</nav>
+<div class="container">
+    <div class="text-center car-details-container">
+        <h1>Dettagli Auto</h1>
+        <div class="car-image-container">
+            <img class="car-image" src="<%= car.image %>" alt="Immagine auto">
+        </div>
+        <h2><%= car.marca %> <%= car.modello %></h2>
+        <p>Prezzo: <%= car.prezzo %>€</p>
+        <p>Descrizione: <%= car.descrizione %></p>
+    </div>
+</div>
+</body>
+</html>

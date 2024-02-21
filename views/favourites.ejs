@@ -10,7 +10,10 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/user/home">Home</a>
+        <a class="navbar-brand" style="color: #ff6800" href="/user/home">Home</a>
+        <a class="navbar-brand ms-auto" href="/">
+            <img src="../images/Logo.png" alt="Immagine" width="200" class="img-fluid">
+        </a>
     </div>
 </nav>
 <div class="container">
@@ -31,12 +34,14 @@
                 <tbody>
                 <% cars.forEach(function(car) { %>
                     <tr>
-                        <td><%= car.marca %></td>
-                        <td><%= car.modello %></td>
-                        <td><%= car.prezzo %>€</td>
+                        <td><a href="/cars/details/<%= car.id %>"><%= car.marca %></a></td>
+                        <td><a href="/cars/details/<%= car.id %>"><%= car.modello %></a></td>
+                        <td><a href="/cars/details/<%= car.id %>"><%= car.prezzo %>€</a></td>
                         <td>
                             <div class="square-image-container">
-                                <img class="square-image" src="<%= car.image %>" alt="Immagine auto">
+                                <a href="/cars/details/<%= car.id %>">
+                                    <img class="square-image" src="<%= car.image %>" alt="Immagine auto">
+                                </a>
                             </div>
                         </td>
                         <td>

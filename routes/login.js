@@ -18,7 +18,7 @@ router.post('/session', function(req, res, next) {
 
             console.log(user.ruolo);
             if(user.ruolo==='Utente')
-                res.render('home');
+                res.render('home', {user});
             else
                 res.redirect('/admin/dashboard');
         });
