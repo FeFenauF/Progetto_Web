@@ -55,5 +55,33 @@ router.get('/details/:carid', (req, res) => {
         });
 });
 
+router.get('/cart/add/:carid', (req, res) => {
+    if (req.isAuthenticated()){
+        carsDao.addToCart(req.user.id, req.params.carid)
+            .then(() => {
+                res.redirect('../../../user/cart');
+            })
+            .catch(() => {
+                res.redirect('/user/home');
+            });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/cart/remove/:carid', (req, res) => {
+    if(req.isAuthenticated()){
+        carsDao.removeCarFromCart(req.user.id, req.params.carid)
+            .then(() => {
+                res.redirect('../../../user/cart');
+            })
+            .catch(() => {
+                res.redirect('/user/home');
+            });
+    } else {
+        res.redirect('/login');
+    }
+});
+
 
 module.exports = router;

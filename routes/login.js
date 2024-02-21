@@ -29,7 +29,7 @@ router.delete('/session/current', function(req, res, next) {
     req.logout(function(err) {
         if (err) { return res.status(503).json(err); }
     });
-    res.end();
+    res.render('../../');
 });
 
 module.exports = router;

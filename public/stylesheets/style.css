@@ -98,3 +98,12 @@ h1 {
 a {
   color: #ff6800;
 }
+
+.card {
+  height: 600px; /* Altezza fissa per tutte le card */
+}
+
+.card img {
+  height: 400px; /* Altezza fissa per le immagini all'interno delle card */
+  object-fit: cover; /* Copre l'intera area dell'elemento mantenendo l'aspetto originale dell'immagine */
+}
