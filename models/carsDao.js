@@ -2,8 +2,8 @@ const db = require('../Database');
 
 exports.newCar = (car) => {
     return new Promise(async (resolve, reject) => {
-        const query = 'INSERT INTO Cars(marca, modello, prezzo, descrizione, image) VALUES (?,?,?,?,?)';
-        db.run(query, [car.marca, car.modello, car.prezzo, car.descrizione, car.image], (err, row) => {
+        const query = 'INSERT INTO Cars(marca, modello, prezzo, descrizione, image, status) VALUES (?,?,?,?,?,?)';
+        db.run(query, [car.marca, car.modello, car.prezzo, car.descrizione, car.image, "Stock"], (err, row) => {
             if (err) reject(err);
             resolve(car.id);
         })
@@ -12,8 +12,8 @@ exports.newCar = (car) => {
 
 exports.getAllCars = () => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT * FROM Cars';
-        db.all(query, [], (err, rows) => {
+        const query = 'SELECT * FROM Cars WHERE status=?';
+        db.all(query, ["Stock"], (err, rows) => {
             if (err) reject(err);
             else if (rows.length === 0) resolve({ error: "Nessuna auto trovata" });
             else {
@@ -24,6 +24,7 @@ exports.getAllCars = () => {
                     prezzo: row.prezzo,
                     descrizione: row.descrizione,
                     image: "../../images/" + row.image,
+                    status: row.status,
                     link: '/cars/details/' + row.id,
             }));
                 resolve(cars);
@@ -68,7 +69,7 @@ exports.addFavourite = (userid, carid) => {
 
 exports.getAllFavourites=(userid) => {
     return new Promise((resolve, reject) => {
-        const query = 'SELECT Cars.* FROM Cars INNER JOIN Preferiti ON Cars.id = Preferiti.carid WHERE Preferiti.userid = ?';
+        const query = 'SELECT Cars.* FROM Cars INNER JOIN Preferiti ON Cars.id = Preferiti.carid WHERE Preferiti.userid = ? AND Cars.status="Stock"';
         db.all(query, [userid], (err, rows) => {
             if (err) throw err;
             else if (rows === undefined) reject({error: "Auto inesistente"});
@@ -81,6 +82,7 @@ exports.getAllFavourites=(userid) => {
                         prezzo: row.prezzo,
                         descrizione: row.descrizione,
                         image: "../../images/" + row.image,
+                        status: row.status,
                         link: '/cars/details/' + row.id,
                     }
                 ));
@@ -115,6 +117,7 @@ exports.getCarById = (carid) => {
                     prezzo: row.prezzo,
                     descrizione: row.descrizione,
                     image: "../../images/" + row.image,
+                    status: row.status,
                     link: '/cars/details/' + row.id,
                 }
 
@@ -173,6 +176,7 @@ exports.getCart=(userid) => {
                         prezzo: row.prezzo,
                         descrizione: row.descrizione,
                         image: "../../images/" + row.image,
+                        status: row.status,
                         link: '/cars/details/' + row.id,
                     }
                 ));
@@ -192,3 +196,77 @@ exports.removeCarFromCart = (userid, carid) => {
         })
     });
 }
+
+exports.performCheckout = (cars) => {
+    return new Promise((resolve, reject) => {
+        var error = false;
+        cars.forEach(function (car) {
+            const query = 'UPDATE Cars SET status="Ordered" WHERE id=?';
+            db.run(query, [car.id], (err, row) => {
+                if (err) error = true;
+            })
+        })
+        if(!error) {
+            resolve(cars);
+        } else {
+            reject("Errore");
+        }
+    })
+}
+
+exports.addOrder = (userid, cars, cardNumber) => {
+    console.log(userid);
+    return new Promise(async (resolve, reject) => {
+        var error = false;
+        cars.forEach(function (car) {
+            console.log(car.id);
+            console.log(cardNumber);
+            const query = 'INSERT INTO Ordini(userid,carid,cardNumber) VALUES (?,?,?)';
+            db.run(query, [userid, car.id, cardNumber], (err, row) => {
+                if (err) error = true;
+            })
+        })
+        if(!error) {
+            resolve(cars);
+        } else {
+            reject("Errore");
+        }
+    })
+
+}
+
+exports.removeAllFromCart = (userid) => {
+    return new Promise((resolve, reject) => {
+        const query = 'DELETE FROM Carrello WHERE userid=?';
+        db.run(query, [userid], (err, row) => {
+            if (err) reject("Errore");
+            resolve(userid);
+        })
+    });
+}
+
+exports.getOrders=(userid) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT Cars.*, Ordini.cardNumber FROM Cars INNER JOIN Ordini ON Cars.id = Ordini.carid WHERE Ordini.userid = ? AND Cars.status="Ordered"';
+        db.all(query, [userid], (err, rows) => {
+            if (err) throw err;
+            else if (rows === undefined) reject({error: "Auto inesistente"});
+            else {
+                const cars = rows.map(row => ({
+                        id: row.id,
+                        marca: row.marca,
+                        modello: row.modello,
+                        prezzo: row.prezzo,
+                        descrizione: row.descrizione,
+                        image: "../../images/" + row.image,
+                        status: row.status,
+                        cardNumber: row.cardNumber,
+                        link: '/cars/details/' + row.id,
+                    }
+                ));
+                resolve(cars);
+            }
+        })
+    })
+}
+

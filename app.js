@@ -11,6 +11,10 @@ const LocalStrategy = require('passport-local').Strategy;
 const usersDao = require('./models/usersDao');
 const app = express();
 
+const upload = require('express-fileupload');
+app.use(upload());
+
+
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
@@ -59,6 +63,7 @@ const loginRouter = require('./routes/login');
 const carsRouter = require('./routes/cars');
 const userRouter = require('./routes/user');
 const cardsRouter = require('./routes/cards');
+const adminRouter = require('./routes/admin');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -80,8 +85,7 @@ app.use('/login', loginRouter);
 app.use('/cars', carsRouter);
 app.use('/user', userRouter);
 app.use('/cards', cardsRouter);
-
-
+app.use('/admin', adminRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -14,8 +14,7 @@ exports.getAllCards = (userid) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM Carte WHERE userid=?';
         db.all(query, [userid], (err, rows) => {
-            if (err) throw(err);
-            else if (rows === undefined) reject({ error: "Nessuna carta trovata" });
+            if (err) reject(err);
             else {
                 const cards = rows.map(row => ({
                     cardid: row.cardid,
@@ -25,7 +24,7 @@ exports.getAllCards = (userid) => {
                     cognome: row.cognome,
                     scadenza: row.scadenza
                 }));
-                resolve(cards);
+                resolve({hasCards: cards.length > 0, cards});
             }
         });
     });
@@ -38,5 +37,21 @@ exports.removeCard = (userid, cardid) => {
             if (err) reject("Errore");
             resolve(cardid);
         })
+    });
+}
+
+exports.getCard = (userid) => {
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM Carte WHERE userid=?';
+        db.all(query, [userid], (err, rows) => {
+            if (err) {
+                reject(err);
+
+            } else if (rows.length === 0) {
+                reject('Nessuna carta inserita')
+            } else {
+                resolve(rows);
+            }
+        });
     });
 }

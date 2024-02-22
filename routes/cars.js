@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const carsDao = require('../models/carsDao');
+const cardsDao = require('../models/cardsDao');
 
 
 router.get('/showroom', (req, res) => {
@@ -82,6 +83,62 @@ router.get('/cart/remove/:carid', (req, res) => {
         res.redirect('/login');
     }
 });
+
+router.get('/checkout', (req, res) => {
+    if(req.isAuthenticated()) {
+        cardsDao.getAllCards(req.user.id)
+            .then(({hasCards, cards}) => {
+                if (hasCards) {
+                    console.log(cards);
+                    res.render('checkout', {cards});
+                } else {
+                    res.redirect('/user/carteform');
+                }
+            })
+            .catch(() => {
+                res.redirect('/user/carteform');
+            });
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.post('/checkout', (req, res) => {
+    if(req.isAuthenticated()) {
+        console.log(req.body.card);
+        carsDao.getCart(req.user.id)
+            .then((cars) => {
+                carsDao.performCheckout(cars)
+                    .then((orderedCars) => {
+                        carsDao.addOrder(req.user.id, orderedCars, req.body.card)
+                            .then(() => {
+                                carsDao.removeAllFromCart(req.user.id)
+                                    .then(() => {
+                                        res.redirect('../../../user/orders');
+                                    })
+                                    .catch((err) => {
+                                        console.error(err);
+                                        res.status(500).send('Errore svuotamento carrello');
+                                    })
+                            })
+                            .catch((err) => {
+                                console.error(err);
+                                res.status(500).send('Errore aggiunta ordine');
+                            })
+                    })
+                    .catch((err) => {
+                        console.error(err);
+                        res.status(500).send('Errore nel checkout');
+                    })
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Errore recupero dati del carrello');
+            })
+    } else {
+        res.redirect('/login');
+    }
+})
 
 
 module.exports = router;

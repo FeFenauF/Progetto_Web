@@ -49,13 +49,13 @@ router.get('/carte', (req, res) => {
     if (req.isAuthenticated()){
         console.log(req.user.id);
         cardsDao.getAllCards(req.user.id)
-            .then((cards) => {
+            .then(({hasCards, cards}) => {
                 console.log(cards);
                 res.render('carte', {cards});
             })
             .catch((err) => {
                 console.error(err);
-                res.status(500).send('Errore recupero dati carte');
+                res.render('carte', cards);
             });
 
     } else {
@@ -66,6 +66,22 @@ router.get('/carte', (req, res) => {
 router.get('/carteform', function (req, res){
     if (req.isAuthenticated()) {
         res.render('carteform', {user: req.user});
+    } else {
+        res.redirect('/login');
+    }
+});
+
+router.get('/orders', (req, res) => {
+    if (req.isAuthenticated()){
+        carsDao.getOrders(req.user.id)
+            .then((orders) => {
+                console.log(orders);
+                res.render('orders', {orders});
+            })
+            .catch((err) => {
+                console.error(err);
+                res.status(500).send('Errore recupero dati degli ordini');
+            });
     } else {
         res.redirect('/login');
     }
