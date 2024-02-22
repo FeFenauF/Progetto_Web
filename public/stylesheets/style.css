@@ -79,8 +79,8 @@ button:hover {
 }
 
 .car-image-container {
-  width: 500px; /* Imposta la larghezza desiderata */
-  height: 300px; /* Imposta l'altezza desiderata */
+  width: 600px; /* Imposta la larghezza desiderata */
+  height: 400px; /* Imposta l'altezza desiderata */
   border: 2px solid #ddd;
   border-radius: 8px;
 }

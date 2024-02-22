@@ -1,5 +1,6 @@
 const express = require('express');
 const carsDao = require("../models/carsDao");
+const cardsDao = require("../models/cardsDao");
 const router = express.Router();
 
 router.get('/home', function (req, res){
@@ -36,7 +37,7 @@ router.get('/cart', (req, res) => {
             })
             .catch((err) => {
                 console.error(err);
-                res.status(500).send('Errore recupero dati dei preferiti');
+                res.status(500).send('Errore recupero dati carrello');
             });
 
     } else {
@@ -44,16 +45,17 @@ router.get('/cart', (req, res) => {
     }
 });
 
-router.get('/paymethods', (req, res) => {
+router.get('/carte', (req, res) => {
     if (req.isAuthenticated()){
-        carsDao.getAllCards(req.user.id)
+        console.log(req.user.id);
+        cardsDao.getAllCards(req.user.id)
             .then((cards) => {
                 console.log(cards);
-                res.render('payments', {cards});
+                res.render('carte', {cards});
             })
             .catch((err) => {
                 console.error(err);
-                res.status(500).send('Errore nessuna carta');
+                res.status(500).send('Errore recupero dati carte');
             });
 
     } else {
@@ -61,22 +63,15 @@ router.get('/paymethods', (req, res) => {
     }
 });
 
-
-router.get('/paymethods/add', (req, res) => {
-    if (req.isAuthenticated()){
-        carsDao.addCard(req.body, req.user.id)
-            .then((card) => {
-                console.log(card);
-                res.render('../', {card});
-            })
-            .catch((err) => {
-                console.error(err);
-                res.status(500).send('Errore aggiunta carta');
-            });
-
+router.get('/carteform', function (req, res){
+    if (req.isAuthenticated()) {
+        res.render('carteform', {user: req.user});
     } else {
         res.redirect('/login');
     }
 });
+
+
+
 
 module.exports = router;

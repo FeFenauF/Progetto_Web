@@ -7,8 +7,6 @@ exports.newCar = (car) => {
             if (err) reject(err);
             resolve(car.id);
         })
-
-
     })
 }
 

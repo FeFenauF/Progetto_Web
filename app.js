@@ -58,6 +58,7 @@ const usersRouter = require('./routes/users');
 const loginRouter = require('./routes/login');
 const carsRouter = require('./routes/cars');
 const userRouter = require('./routes/user');
+const cardsRouter = require('./routes/cards');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -78,6 +79,7 @@ app.use('/users', usersRouter);
 app.use('/login', loginRouter);
 app.use('/cars', carsRouter);
 app.use('/user', userRouter);
+app.use('/cards', cardsRouter);
 
 
 

@@ -20,15 +20,15 @@
     <div class="text-center">
         <h1>Metodi di pagamento</h1>
 
-        <% if (card.length > 0) { %>
+        <% if (cards.length > 0) { %>
             <div class="row">
                 <% cards.forEach(function(card) { %>
                     <div class="col-md-3 my-2 mx-4">
                         <div class="card mb-5">
                             <div class="card-body">
                                 <h5 class="card-title"><%= card.nome %> <%= card.cognome %></h5>
-                                <p class="card-text"><%= card.cardNumber %>€</p>
-                                <a href="/cars/favourites/add/<%= car.id %>" class="btn btn-primary">Rimuovi metodo di pagamento</a>
+                                <p class="card-text"><%= card.cardNumber %></p>
+                                <a href="/cards/carte/remove/<%= card.cardid %>" class="btn btn-danger">Rimuovi metodo di pagamento</a>
                             </div>
                         </div>
                     </div>
@@ -37,6 +37,7 @@
         <% } else { %>
             <p>Nessuna metodo di pagamento inserito.</p>
         <% } %>
+        <a href="/user/carteform" class="btn btn-primary">Aggiungi metodo di pagamento</a>
     </div>
 </div>
 </body>
