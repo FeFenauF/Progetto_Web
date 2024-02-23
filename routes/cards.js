@@ -16,7 +16,7 @@ router.post('/add', (req, res) => {
             });
 
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -30,7 +30,7 @@ router.get('/remove/:cardid', (req, res) => {
                 res.redirect('/user/home');
             });
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 

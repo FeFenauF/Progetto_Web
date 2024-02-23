@@ -6,7 +6,7 @@ router.get('/home', function (req, res){
     if (req.isAuthenticated()) {
         res.render('adminhome', {user: req.user});
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -14,7 +14,7 @@ router.get('/carform', (req, res) => {
     if (req.isAuthenticated()) {
         res.render('adminnewcar');
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso come admin!", link: '/login'});
     }
 })
 
@@ -37,15 +37,13 @@ router.post('/newcar', (req, res) => {
 
             file.mv(`${destinationPath}${filename}`, (err) => {
                 if (err) {
-                    console.error(err);
-                    return res.status(500).send("Errore durante il salvataggio del file.");
+                    res.render('error', {message: "Errore durante il salvataggio del file!", error: err, link: '/admin/home'});
                 }
             });
             res.redirect('../home');
         })
         .catch((err) => {
-            console.error(err);
-            res.status(500).send("Errore durante l'aggiunta del prodotto.");
+            res.render('error', {message: "Errore durante l'aggiunta del prodotto!", error: err, link: '/admin/home'});
         });
 });
 

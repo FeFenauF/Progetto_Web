@@ -108,7 +108,7 @@ exports.getCarById = (carid) => {
         const query = 'SELECT * FROM Cars WHERE id=?';
         db.get(query, [carid], (err, row) => {
             if (err) throw err;
-            else if (row === undefined) resolve({error: "Auto inesistente"});
+            else if (row === undefined) reject({error: "Auto inesistente"});
             else {
                 const car = {
                     id: row.id,
@@ -120,7 +120,6 @@ exports.getCarById = (carid) => {
                     status: row.status,
                     link: '/cars/details/' + row.id,
                 }
-
                 resolve(car);
             }
         })
@@ -261,6 +260,31 @@ exports.getOrders=(userid) => {
                         image: "../../images/" + row.image,
                         status: row.status,
                         cardNumber: row.cardNumber,
+                        link: '/cars/details/' + row.id,
+                    }
+                ));
+                resolve(cars);
+            }
+        })
+    })
+}
+
+exports.searchCars=(cerca) =>{
+    console.log(cerca);
+    return new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM Cars WHERE marca LIKE ? AND status="Stock" OR modello LIKE ? AND status="Stock"';
+        db.all(query, [`%${cerca}%`, `%${cerca}%`], (err, rows) => {
+            if (err) throw err;
+            else if (rows.length === 0) resolve({error: "Nessuna auto trovata"});
+            else {
+                const cars = rows.map(row => ({
+                        id: row.id,
+                        marca: row.marca,
+                        modello: row.modello,
+                        prezzo: row.prezzo,
+                        descrizione: row.descrizione,
+                        image: "../../images/" + row.image,
+                        status: row.status,
                         link: '/cars/details/' + row.id,
                     }
                 ));

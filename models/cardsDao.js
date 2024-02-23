@@ -46,7 +46,6 @@ exports.getCard = (userid) => {
         db.all(query, [userid], (err, rows) => {
             if (err) {
                 reject(err);
-
             } else if (rows.length === 0) {
                 reject('Nessuna carta inserita')
             } else {

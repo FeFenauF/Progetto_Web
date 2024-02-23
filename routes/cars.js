@@ -7,12 +7,10 @@ const cardsDao = require('../models/cardsDao');
 router.get('/showroom', (req, res) => {
     carsDao.getAllCars()
         .then((cars) => {
-            console.log(cars);
             res.render('showroom', {cars});
         })
         .catch((err) => {
-            console.error(err);
-            res.status(500).send('Errore recupero dati delle auto');
+            res.render('error', {message: "Errore recupero dati dello showroom!", error: err, link: '/user/home'});
         });
 });
 
@@ -22,11 +20,11 @@ router.get('/favourites/add/:carid', (req, res) => {
             .then(() => {
                 res.redirect('../../../user/favourites');
             })
-            .catch(() => {
-                res.redirect('/user/home');
+            .catch((err) => {
+                res.render('error', {message: "Errore aggiunta ai preferiti!", error: err, link: '/user/home'});
             });
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -36,11 +34,11 @@ router.get('/favourites/remove/:carid', (req, res) => {
             .then(() => {
                 res.redirect('../../../user/favourites');
             })
-            .catch(() => {
-                res.redirect('/user/home');
+            .catch((err) => {
+                res.render('error', {message: "Errore rimozione preferito!", error: err, link: '/user/home'});
             });
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -50,9 +48,8 @@ router.get('/details/:carid', (req, res) => {
         .then((car) => {
             res.render('details', {car});
         })
-        .catch(() => {
-            console.error(err);
-            res.status(500).send('Errore recupero dati dell auto');
+        .catch((err) => {
+            res.render('error', {message: "Errore recupero dati dell'auto!", error: err, link: '../showroom'});
         });
 });
 
@@ -62,11 +59,11 @@ router.get('/cart/add/:carid', (req, res) => {
             .then(() => {
                 res.redirect('../../../user/cart');
             })
-            .catch(() => {
-                res.redirect('/user/home');
+            .catch((err) => {
+                res.render('error', {message: "Errore aggiunta al carrello!", error: err, link: '/cars/showroom'});
             });
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -76,11 +73,11 @@ router.get('/cart/remove/:carid', (req, res) => {
             .then(() => {
                 res.redirect('../../../user/cart');
             })
-            .catch(() => {
-                res.redirect('/user/home');
+            .catch((err) => {
+                res.render('error', {message: "Errore rimozione auto dal carrello!", error: err, link: '/user/home'});
             });
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -92,14 +89,14 @@ router.get('/checkout', (req, res) => {
                     console.log(cards);
                     res.render('checkout', {cards});
                 } else {
-                    res.redirect('/user/carteform');
+                    res.render('error', {message: "Devi aggiungere un metodo di pagamento!", error: "No card", link: '/user/carteform'});
                 }
             })
-            .catch(() => {
-                res.redirect('/user/carteform');
+            .catch((err) => {
+                res.render('error', {message: "Errore recupero dati carte!", error: err, link: '/user/home'});
             });
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -117,28 +114,33 @@ router.post('/checkout', (req, res) => {
                                         res.redirect('../../../user/orders');
                                     })
                                     .catch((err) => {
-                                        console.error(err);
-                                        res.status(500).send('Errore svuotamento carrello');
+                                        res.render('error', {message: "Errore svuotamento carrello!", error: err, link: '/user/home'});
                                     })
                             })
                             .catch((err) => {
-                                console.error(err);
-                                res.status(500).send('Errore aggiunta ordine');
+                                res.render('error', {message: "Errore aggiunta ordine!", error: err, link: '/user/home'});
                             })
                     })
                     .catch((err) => {
-                        console.error(err);
-                        res.status(500).send('Errore nel checkout');
+                        res.render('error', {message: "Errore nel checkout!", error: err, link: '/user/home'});
                     })
             })
             .catch((err) => {
-                console.error(err);
-                res.status(500).send('Errore recupero dati del carrello');
+                res.render('error', {message: "Errore recupero dati del carrello!", error: err, link: '/user/home'});
             })
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 })
 
+router.post('/cerca', (req, res) => {
+    carsDao.searchCars((req.body.cerca).toLowerCase())
+        .then((cars) => {
+            res.render('showroom', {cars, active:'Cars'});
+        })
+        .catch((err) => {
+            res.render('error', {message: "Errore nella ricerca!", error: err, link: '/user/home'});
+        })
+})
 
 module.exports = router;

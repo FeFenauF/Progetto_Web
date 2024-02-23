@@ -18,7 +18,7 @@ router.post('/session', function(req, res, next) {
 
             console.log(user.ruolo);
             if(user.ruolo==='Utente')
-                res.redirect('/user/home', {user});
+                res.redirect('/user/home');
             else
                 res.redirect('/admin/home');
         });
@@ -29,7 +29,7 @@ router.delete('/session/current', function(req, res, next) {
     req.logout(function(err) {
         if (err) { return res.status(503).json(err); }
     });
-    res.render('../../');
+    res.end();
 });
 
 module.exports = router;

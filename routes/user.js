@@ -5,9 +5,13 @@ const router = express.Router();
 
 router.get('/home', function (req, res){
     if (req.isAuthenticated()) {
-        res.render('home', {user: req.user});
+        if(req.user.ruolo==="Utente"){
+            res.render('home', {user: req.user});
+        } else {
+            res.redirect('/admin/home');
+        }
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -19,12 +23,11 @@ router.get('/favourites', (req, res) => {
                 res.render('favourites', {cars});
             })
             .catch((err) => {
-                console.error(err);
-                res.status(500).send('Errore recupero dati dei preferiti');
+                res.render('error', {message: "Errore recupero dati dei preferiti!", error: err, link: '../home'});
             });
 
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -36,12 +39,11 @@ router.get('/cart', (req, res) => {
                 res.render('cart', {cars});
             })
             .catch((err) => {
-                console.error(err);
-                res.status(500).send('Errore recupero dati carrello');
+                res.render('error', {message: "Errore recupero dati carrello!", error: err, link: '../home'});
             });
 
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -54,12 +56,11 @@ router.get('/carte', (req, res) => {
                 res.render('carte', {cards});
             })
             .catch((err) => {
-                console.error(err);
-                res.render('carte', cards);
+                res.render('error', {message: "Errore recupero dati delle carte!", error: err, link: '../home'});
             });
 
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -67,7 +68,7 @@ router.get('/carteform', function (req, res){
     if (req.isAuthenticated()) {
         res.render('carteform', {user: req.user});
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
@@ -79,11 +80,10 @@ router.get('/orders', (req, res) => {
                 res.render('orders', {orders});
             })
             .catch((err) => {
-                console.error(err);
-                res.status(500).send('Errore recupero dati degli ordini');
+                res.render('error', {message: "Errore recupero dati degli ordini!", error: err, link: '../home'});
             });
     } else {
-        res.redirect('/login');
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
