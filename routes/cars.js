@@ -18,7 +18,7 @@ router.get('/favourites/add/:carid', (req, res) => {
     if (req.isAuthenticated()){
         carsDao.addFavourite(req.user.id, req.params.carid)
             .then(() => {
-                res.redirect('../../../user/favourites');
+                res.redirect('/user/favourites');
             })
             .catch((err) => {
                 res.render('error', {message: "Errore aggiunta ai preferiti!", error: err, link: '/user/home'});
@@ -89,7 +89,7 @@ router.get('/checkout', (req, res) => {
                     console.log(cards);
                     res.render('checkout', {cards});
                 } else {
-                    res.render('error', {message: "Devi aggiungere un metodo di pagamento!", error: "No card", link: '/user/carteform'});
+                    res.render('error', {message: "Devi aggiungere un metodo di pagamento!", link: '/user/carteform'});
                 }
             })
             .catch((err) => {
@@ -142,5 +142,48 @@ router.post('/cerca', (req, res) => {
             res.render('error', {message: "Errore nella ricerca!", error: err, link: '/user/home'});
         })
 })
+
+router.post('/newcar', (req, res) => {
+    var car = req.body;
+    var file = req.files.image;
+
+    if (!file) {
+        return res.status(400).send("Nessun file caricato.");
+    }
+
+    var filename = file.name;
+    car.image = filename;
+
+    console.log(req.body);
+    carsDao.newCar(car)
+        .then(() => {
+            console
+            const destinationPath = `public/images/`;
+
+            file.mv(`${destinationPath}${filename}`, (err) => {
+                if (err) {
+                    res.render('error', {message: "Errore durante il salvataggio del file!", error: err, link: '/admin/home'});
+                }
+            });
+            res.redirect('../home');
+        })
+        .catch((err) => {
+            res.render('error', {message: "Errore durante l'aggiunta del prodotto!", error: err, link: '/admin/home'});
+        });
+});
+
+router.get('/removecar/:carid', (req, res) => {
+    if(req.isAuthenticated()){
+        carsDao.removeCar(req.params.carid)
+            .then(() => {
+                res.redirect('/admin/removecar');
+            })
+            .catch((err) => {
+                res.render('error', {message: "Errore rimozione auto!", error: err, link: '/admin/home'});
+            });
+    } else {
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+    }
+});
 
 module.exports = router;

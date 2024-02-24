@@ -14,7 +14,8 @@ exports.getAllCards = (userid) => {
     return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM Carte WHERE userid=?';
         db.all(query, [userid], (err, rows) => {
-            if (err) reject(err);
+            if (err) throw(err);
+            else if (rows === undefined) reject({error: "Carte inesistenti"});
             else {
                 const cards = rows.map(row => ({
                     cardid: row.cardid,

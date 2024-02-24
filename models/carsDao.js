@@ -294,3 +294,24 @@ exports.searchCars=(cerca) =>{
     })
 }
 
+exports.removeCar = (carid) => {
+    const queryCars = 'DELETE FROM Cars WHERE id = ?';
+    const queryPreferiti = 'DELETE FROM Preferiti WHERE carid = ?';
+    const queryCarrello = 'DELETE FROM Carrello WHERE carid = ?';
+
+    return new Promise((resolve, reject) => {
+        db.run(queryCarrello, [carid], (err) => {
+            if (err) reject(err);
+
+            db.run(queryPreferiti, [carid], (err) => {
+                if (err) reject(err);
+
+                db.run(queryCars, [carid], (err) => {
+                    if (err) reject(err);
+                    resolve();
+                });
+            });
+        });
+    });
+}
+

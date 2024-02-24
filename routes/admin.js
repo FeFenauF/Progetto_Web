@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const carsDao = require('../models/carsDao');
+const usersDao = require('../models/usersDao');
 
 router.get('/home', function (req, res){
     if (req.isAuthenticated()) {
@@ -18,33 +19,35 @@ router.get('/carform', (req, res) => {
     }
 })
 
-router.post('/newcar', (req, res) => {
-    var car = req.body;
-    var file = req.files.image;
-
-    if (!file) {
-        return res.status(400).send("Nessun file caricato.");
+router.get('/operations', function (req, res){
+    if (req.isAuthenticated()) {
+        res.render('adminoperations', {user: req.user});
+    } else {
+        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
     }
-
-    var filename = file.name;
-    car.image = filename;
-
-    console.log(req.body);
-    carsDao.newCar(car)
-        .then(() => {
-            console
-            const destinationPath = `public/images/`;
-
-            file.mv(`${destinationPath}${filename}`, (err) => {
-                if (err) {
-                    res.render('error', {message: "Errore durante il salvataggio del file!", error: err, link: '/admin/home'});
-                }
-            });
-            res.redirect('../home');
-        })
-        .catch((err) => {
-            res.render('error', {message: "Errore durante l'aggiunta del prodotto!", error: err, link: '/admin/home'});
-        });
 });
+
+router.get('/adminform', (req, res) => {
+    if (req.isAuthenticated()) {
+        res.render('newadmin');
+    } else {
+        res.render('error', {message: "Devi prima effettuare l'accesso come admin!", link: '/login'});
+    }
+})
+
+router.get('/removecar', (req, res) => {
+    if (req.isAuthenticated()) {
+        carsDao.getAllCars()
+            .then((cars) => {
+                res.render('showremovable', {cars});
+            })
+            .catch((err) => {
+                res.render('error', {message: "Errore recupero dati delle auto!", error: err, link: '/user/home'});
+            });
+    } else {
+        res.render('error', {message: "Devi prima effettuare l'accesso come admin!", link: '/login'});
+    }
+})
+
 
 module.exports = router;

@@ -11,7 +11,7 @@ router.get('/home', function (req, res){
             res.redirect('/admin/home');
         }
     } else {
-        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+        res.render('error', {message: "Devi prima effettuare l'accesso!", link: '/login'});
     }
 });
 
@@ -27,7 +27,7 @@ router.get('/favourites', (req, res) => {
             });
 
     } else {
-        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+        res.render('error', {message: "Devi prima effettuare l'accesso!", link: '/login'});
     }
 });
 
@@ -43,7 +43,7 @@ router.get('/cart', (req, res) => {
             });
 
     } else {
-        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+        res.render('error', {message: "Devi prima effettuare l'accesso!", link: '/login'});
     }
 });
 
@@ -53,14 +53,15 @@ router.get('/carte', (req, res) => {
         cardsDao.getAllCards(req.user.id)
             .then(({hasCards, cards}) => {
                 console.log(cards);
-                res.render('carte', {cards});
+                console.log(hasCards);
+                res.render('carte', { hasCards, cards });
             })
-            .catch((err) => {
-                res.render('error', {message: "Errore recupero dati delle carte!", error: err, link: '../home'});
+            .catch(() => {
+                res.render('error', {message: "Errore recupero dati delle carte!", link: '/user/home'});
             });
 
     } else {
-        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+        res.render('error', {message: "Devi prima effettuare l'accesso!", link: '/login'});
     }
 });
 
@@ -68,7 +69,7 @@ router.get('/carteform', function (req, res){
     if (req.isAuthenticated()) {
         res.render('carteform', {user: req.user});
     } else {
-        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+        res.render('error', {message: "Devi prima effettuare l'accesso!", link: '/login'});
     }
 });
 
@@ -83,7 +84,7 @@ router.get('/orders', (req, res) => {
                 res.render('error', {message: "Errore recupero dati degli ordini!", error: err, link: '../home'});
             });
     } else {
-        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+        res.render('error', {message: "Devi prima effettuare l'accesso!", link: '/login'});
     }
 });
 

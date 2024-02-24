@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aggiungi Admin</title>
+    <script src="../../javascripts/logout.js" defer></script>
+</head>
+<body>
+<%-include('navbar')%>
+<div class="container mt-5 main-content">
+    <h2>Inserisci i dati del nuovo admin</h2>
+    <form action="/users/adminregister" method="POST">
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" placeholder="admin@example.com" name="email" required>
+        </div>
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nome" placeholder="Nome" name="nome" required>
+        </div>
+        <div class="mb-3">
+            <label for="cognome" class="form-label">Cognome</label>
+            <input type="text" class="form-control" id="cognome" placeholder="Cognome" name="cognome" required>
+        </div>
+        <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="Inserisci la password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Aggiungi Admin</button>
+    </form>
+</div>
+</body>
+</html>

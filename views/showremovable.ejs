@@ -3,33 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auto Preferite</title>
+    <title>Showroom</title>
     <script src="../../javascripts/logout.js" defer></script>
 </head>
 <body>
+
 <%-include('navbar')%>
+
 <div class="container main-content">
     <div class="text-center">
-        <h1>Auto Preferite</h1>
+        <h1>Showroom</h1>
 
         <% if (cars.length > 0) { %>
             <div class="row">
                 <% cars.forEach(function(car) { %>
                     <div class="col-md-3 my-2 mx-4">
-                        <div class="card mb-5" onclick="location.href='<%= car.link %>';">
+                        <div class="card mb-5">
                             <img src="<%= car.image %>" class="card-image-top" alt="Immagine auto">
                             <div class="card-body">
                                 <h5 class="card-title"><%= car.marca %> <%= car.modello %></h5>
                                 <p class="card-text"><%= car.prezzo %>€</p>
-                                <a href="/cars/favourites/remove/<%= car.id %>" class="btn btn-danger">Rimuovi dai Preferiti</a>
-                                <a href="/cars/cart/add/<%= car.id %>" class="btn btn-warning">Aggiungi al carrello</a>
+                                <a href="/cars/removecar/<%= car.id %>" class="btn btn-danger"><i class="fas fa-star"></i>Rimuovi</a>
                             </div>
                         </div>
                     </div>
                 <% }); %>
             </div>
         <% } else { %>
-            <p>Nessuna auto preferita.</p>
+            <p>Nessuna auto disponibile.</p>
         <% } %>
     </div>
 </div>

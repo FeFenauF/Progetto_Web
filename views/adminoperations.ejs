@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Operazioni Admin</title>
+    <script src="../../javascripts/logout.js" defer></script>
+</head>
+<body>
+
+<%-include('navbar')%>
+
+<div class="container main-content">
+    <div class="text-center">
+        <h1 class="display-4">Operazioni Admin</h1>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Aggiungi Auto</h5>
+                        <p class="card-text">Per aggiungere un'auto al sistema.</p>
+                        <a href="/admin/carform" class="btn btn-primary">Aggiungi Auto</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Aggiungi Admin</h5>
+                        <p class="card-text">Per aggiungere un nuovo admin al sistema.</p>
+                        <a href="/admin/adminform" class="btn btn-success">Aggiungi Admin</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Elimina Auto</h5>
+                        <p class="card-text">Per eliminare un'auto dal sistema.</p>
+                        <a href="/admin/removecar" class="btn btn-danger">Elimina Auto</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

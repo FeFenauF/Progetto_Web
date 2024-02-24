@@ -50,3 +50,19 @@ exports.getUserById=(id)=> {
         })
     })
 }
+
+exports.newAdmin = (user) => {
+    const saltRounds = 10;
+    const salt = bcrypt.genSaltSync(saltRounds);
+    user.password = bcrypt.hashSync(user.password, salt);
+
+    return new Promise(async (resolve, reject) => {
+        const query = 'INSERT INTO Users(email, password, nome, cognome, ruolo) VALUES (?,?,?,?,?)';
+        console.log(user.nome);
+        user.ruolo = "Admin";
+        db.run(query, [user.email, user.password, user.nome, user.cognome, user.ruolo], (err, row) => {
+            if (err) reject(err);
+            resolve();
+        });
+    });
+}

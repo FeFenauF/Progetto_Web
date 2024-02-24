@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dettagli Auto</title>
+    <title><%= car.marca %> <%= car.modello %> - Dettagli Auto</title>
     <script src="../../javascripts/logout.js" defer></script>
 </head>
 <body>
-<%-include('navbar')%>
+<%- include('navbar') %>
 
-<div class="container">
+<div class="container main-content">
     <div class="text-center car-details-container">
-        <h1>Dettagli Auto</h1>
+        <h1 class="display-4"><%= car.marca %> <%= car.modello %></h1>
         <div class="car-image-container">
-            <img class="car-image" src="<%= car.image %>" alt="Immagine auto">
+            <img class="car-image img-fluid" src="<%= car.image %>" alt="<%= car.marca %> <%= car.modello %>">
         </div>
-        <h2><%= car.marca %> <%= car.modello %></h2>
-        <p>Prezzo: <%= car.prezzo %>€</p>
-        <p>Descrizione: <%= car.descrizione %></p>
+        <div class="details mt-4">
+            <h2 class="mb-3">Dettagli Auto</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="lead">Prezzo:</p>
+                    <p class="h4"><%= car.prezzo %>€</p>
+                </div>
+                <div class="col-md-6">
+                    <p class="lead">Descrizione:</p>
+                    <p><%= car.descrizione %></p>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>

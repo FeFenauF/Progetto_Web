@@ -10,7 +10,7 @@
 
 <%-include('navbar')%>
 
-<div class="container">
+<div class="container main-content">
     <div class="text-center">
         <h1>Showroom</h1>
 
@@ -23,8 +23,8 @@
                             <div class="card-body">
                                 <h5 class="card-title"><%= car.marca %> <%= car.modello %></h5>
                                 <p class="card-text"><%= car.prezzo %>€</p>
-                                <a href="/cars/favourites/add/<%= car.id %>" class="btn btn-primary">Aggiungi ai Preferiti</a>
-                                <a href="/cars/cart/add/<%= car.id %>" class="btn btn-warning">Aggiungi al carrello</a>
+                                <a href="/cars/favourites/add/<%= car.id %>" class="btn btn-icon"><i class="fas fa-star"></i>Aggiungi ai preferiti</a>
+                                <a href="/cars/cart/add/<%= car.id %>" class="btn btn-warning"><i class="fas fa-shopping-cart"></i>Aggiungi al carrello</a>
                             </div>
                         </div>
                     </div>
