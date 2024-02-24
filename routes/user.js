@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/home', function (req, res){
     if (req.isAuthenticated()) {
         if(req.user.ruolo==="Utente"){
-            res.render('home', {user: req.user});
+            res.render('home');
         } else {
             res.redirect('/admin/home');
         }

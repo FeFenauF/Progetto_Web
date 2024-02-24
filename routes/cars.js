@@ -144,32 +144,40 @@ router.post('/cerca', (req, res) => {
 })
 
 router.post('/newcar', (req, res) => {
-    var car = req.body;
-    var file = req.files.image;
+    if(req.isAuthenticated()) {
+        var car = req.body;
+        var file = req.files.image;
 
-    if (!file) {
-        return res.status(400).send("Nessun file caricato.");
-    }
+        if (!file) {
+            return res.status(400).send("Nessun file caricato.");
+        }
 
-    var filename = file.name;
-    car.image = filename;
+        var filename = file.name;
+        car.image = filename;
 
-    console.log(req.body);
-    carsDao.newCar(car)
-        .then(() => {
-            console
-            const destinationPath = `public/images/`;
+        console.log(req.body);
+        carsDao.newCar(car)
+            .then(() => {
+                console
+                const destinationPath = `public/images/`;
 
-            file.mv(`${destinationPath}${filename}`, (err) => {
-                if (err) {
-                    res.render('error', {message: "Errore durante il salvataggio del file!", error: err, link: '/admin/home'});
-                }
+                file.mv(`${destinationPath}${filename}`, (err) => {
+                    if (err) {
+                        res.render('error', {
+                            message: "Errore durante il salvataggio del file!",
+                            error: err,
+                            link: '/user/home'
+                        });
+                    }
+                });
+                res.redirect('/user/home');
+            })
+            .catch((err) => {
+                res.render('error', {message: "Errore durante l'aggiunta dell'auto!", error: err, link: '/user/home'});
             });
-            res.redirect('../home');
-        })
-        .catch((err) => {
-            res.render('error', {message: "Errore durante l'aggiunta del prodotto!", error: err, link: '/admin/home'});
-        });
+    } else {
+        res.render('error', {message: "Devi prima effettuare l'accesso come admin!", error: "Accesso non effettuato", link: '/login'});
+    }
 });
 
 router.get('/removecar/:carid', (req, res) => {
@@ -182,7 +190,7 @@ router.get('/removecar/:carid', (req, res) => {
                 res.render('error', {message: "Errore rimozione auto!", error: err, link: '/admin/home'});
             });
     } else {
-        res.render('error', {message: "Devi prima effettuare l'accesso!", error: "Accesso non effettuato", link: '/login'});
+        res.render('error', {message: "Devi prima effettuare l'accesso come admin!", error: "Accesso non effettuato", link: '/login'});
     }
 });
 
