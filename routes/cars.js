@@ -145,36 +145,40 @@ router.post('/cerca', (req, res) => {
 
 router.post('/newcar', (req, res) => {
     if(req.isAuthenticated()) {
-        var car = req.body;
-        var file = req.files.image;
+        let car = req.body;
+        console.log(car);
 
-        if (!file) {
-            return res.status(400).send("Nessun file caricato.");
-        }
+        if (!req.files) {
+            car.image = "default.png";
+            carsDao.newCar(car)
+                .then(() => {
+                    res.redirect('/cars/showroom');
+                })
+                .catch((err) => {
+                    res.render('error', {message: "Errore aggiunta dell'auto!", error: err, link: '/user/home'});
+                })
+        } else {
+            let file = req.files.image;
+            car.image = file.name;
 
-        var filename = file.name;
-        car.image = filename;
+            console.log(req.body);
+            carsDao.newCar(car)
+                .then(() => {
+                    console
+                    const destinationPath = `public/images/`;
 
-        console.log(req.body);
-        carsDao.newCar(car)
-            .then(() => {
-                console
-                const destinationPath = `public/images/`;
-
-                file.mv(`${destinationPath}${filename}`, (err) => {
-                    if (err) {
-                        res.render('error', {
-                            message: "Errore durante il salvataggio del file!",
-                            error: err,
-                            link: '/user/home'
-                        });
-                    }
+                    file.mv(`${destinationPath}${file.name}`, (err) => {
+                        if (err) {
+                            res.render('error', {
+                                message: "Errore salvataggio file!", error: err, link: '/user/home'});
+                        }
+                    });
+                    res.redirect('/cars/showroom');
+                })
+                .catch((err) => {
+                    res.render('error', {message: "Errore aggiunta dell'auto!", error: err, link: '/user/home'});
                 });
-                res.redirect('/user/home');
-            })
-            .catch((err) => {
-                res.render('error', {message: "Errore durante l'aggiunta dell'auto!", error: err, link: '/user/home'});
-            });
+        }
     } else {
         res.render('error', {message: "Devi prima effettuare l'accesso come admin!", error: "Accesso non effettuato", link: '/login'});
     }

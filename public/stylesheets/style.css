@@ -134,3 +134,21 @@ a {
 .contorno {
   text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
 }
+
+.button {
+  background: #ff6800;
+  color: #fff;
+  padding: 10px;
+  border-width: thin;
+  border-color: #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #fff;
+  color: #ff6800;
+  border-style: solid;
+  border-width: thin;
+  border-color: #ff6800;
+}

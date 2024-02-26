@@ -12,6 +12,8 @@
     <div class="text-center">
         <h1>Metodi di pagamento</h1>
 
+        <a href="/user/carteform" class="btn button">Aggiungi metodo di pagamento</a>
+
         <% if (hasCards) { %>
             <div class="row">
                 <% cards.forEach(function(card) { %>
@@ -29,7 +31,6 @@
         <% } else { %>
             <p>Nessuna metodo di pagamento inserito.</p>
         <% } %>
-        <a href="/user/carteform" class="btn btn-primary">Aggiungi metodo di pagamento</a>
     </div>
 </div>
 </body>

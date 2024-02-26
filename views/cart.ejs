@@ -13,6 +13,7 @@
         <h1>Carrello</h1>
 
         <% if (cars.length > 0) { %>
+            <a href="/cars/checkout" class="btn button">Checkout</a>
             <div class="row">
                 <% cars.forEach(function(car) { %>
                     <div class="col-md-3 my-2 mx-4">
@@ -27,7 +28,6 @@
                     </div>
                 <% }); %>
             </div>
-            <a href="/cars/checkout" class="btn btn-primary shadow">Checkout</a>
         <% } else { %>
             <p>Nessuna auto nel carrello.</p>
         <% } %>

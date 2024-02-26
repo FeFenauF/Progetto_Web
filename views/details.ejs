@@ -21,6 +21,8 @@
                 <div class="col-md-6">
                     <p class="lead">Prezzo:</p>
                     <p class="h4"><%= car.prezzo %>€</p>
+                    <a href="/cars/favourites/add/<%= car.id %>" class="btn btn-icon"><i class="fas fa-star"></i>Aggiungi ai preferiti</a><br>
+                    <a href="/cars/cart/add/<%= car.id %>" class="btn btn-warning"><i class="fas fa-shopping-cart"></i>Aggiungi al carrello</a>
                 </div>
                 <div class="col-md-6">
                     <p class="lead">Descrizione:</p>
