@@ -164,7 +164,6 @@ router.post('/newcar', (req, res) => {
             console.log(req.body);
             carsDao.newCar(car)
                 .then(() => {
-                    console
                     const destinationPath = `public/images/`;
 
                     file.mv(`${destinationPath}${file.name}`, (err) => {
